@@ -8,11 +8,12 @@
 
 namespace Blogger\BlogBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Blogger\BlogBundle\Entity\Blog;
 
-class BlogFixtures implements FixtureInterface
+class BlogFixtures extends AbstractFixture implements OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
@@ -59,7 +60,7 @@ class BlogFixtures implements FixtureInterface
         $blog5 = new Blog();
         $blog5->setTitle('You\'re either a one or a zero. Alive or dead');
         $blog5->setBlog('Lorem ipsum dolor sit amet, consectetur adipiscing elittibulum vulputate mauris eget erat congue dapibus imperdiet justo scelerisque.');
-        $blog5->setImage('one_or_zero.jpg');
+        $blog5->setImage('one_or_zero.jpeg');
         $blog5->setAuthor('Gary Winston');
         $blog5->setTags('binary, one, zero, alive, dead, !trusting, movie, symblog');
 //        $blog5->setCreated(new \DateTime("2011-04-25 15:34:18"));
@@ -67,5 +68,16 @@ class BlogFixtures implements FixtureInterface
         $manager->persist($blog5);
 
         $manager->flush();
+
+        $this->addReference('blog-1', $blog1);
+        $this->addReference('blog-2', $blog2);
+        $this->addReference('blog-3', $blog3);
+        $this->addReference('blog-4', $blog4);
+        $this->addReference('blog-5', $blog5);
+    }
+
+    public function getOrder()
+    {
+        return 1;
     }
 }
